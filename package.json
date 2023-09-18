@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "API Wrapper per la API di Argo Scuola (Famiglia)",
   "main": "dist/index.js",
+  "exports": "./dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
     "prepublish": "tsc",
-    "cleanbuild": "rm -rf dist && tsc"
+    "cleanbuild": "rm -rf dist && tsc",
+    "postinstall": "tsc"
   },
   "repository": {
     "type": "git",
@@ -33,5 +35,8 @@
     "base64url": "^3.0.1",
     "fetch-cookie": "^2.1.0",
     "randomstring": "^1.2.3"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
