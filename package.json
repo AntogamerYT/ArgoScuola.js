@@ -1,0 +1,37 @@
+{
+  "name": "argoscuola.js",
+  "version": "1.0.0",
+  "description": "API Wrapper per la API di Argo Scuola (Famiglia)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "prepublish": "tsc",
+    "cleanbuild": "rm -rf dist && tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AntogamerYT/ArgoScuola.js.git"
+  },
+  "keywords": [
+    "api",
+    "wrapper",
+    "argo",
+    "scuolanext"
+  ],
+  "author": "AntogamerYT",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/AntogamerYT/ArgoScuola.js/issues"
+  },
+  "homepage": "https://github.com/AntogamerYT/ArgoScuola.js#readme",
+  "devDependencies": {
+    "@types/randomstring": "^1.1.8",
+    "typescript": "^5.0.2"
+  },
+  "dependencies": {
+    "base64url": "^3.0.1",
+    "fetch-cookie": "^2.1.0",
+    "randomstring": "^1.2.3"
+  }
+}
