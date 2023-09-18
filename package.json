@@ -27,14 +27,12 @@
     "url": "https://github.com/AntogamerYT/ArgoScuola.js/issues"
   },
   "homepage": "https://github.com/AntogamerYT/ArgoScuola.js#readme",
-  "devDependencies": {
-    "@types/randomstring": "^1.1.8",
-    "typescript": "^5.0.2"
-  },
   "dependencies": {
     "base64url": "^3.0.1",
     "fetch-cookie": "^2.1.0",
-    "randomstring": "^1.2.3"
+    "randomstring": "^1.2.3",
+    "@types/randomstring": "^1.1.8",
+    "typescript": "^5.0.2"
   },
   "engines": {
     "node": ">=18"
