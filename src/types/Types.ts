@@ -815,3 +815,198 @@ export interface APIDashboard {
         }
     ]
 }
+
+export interface APIProfilo {
+    /**
+     * Indica se la password è da resettare o no
+     */
+    resetPassword: boolean;
+    /**
+     * Ultimo cambio password (YYYY-MM-DD)
+     */
+    ultimoCambioPassword: string;
+    /**
+     * Informazioni sull'anno scolastico corrente
+     */
+    anno: {
+        /**
+         * Data di inizio dell'anno scolastico (YYYY-MM-DD)
+         */
+        dataInizio: string;
+        /**
+         * Anno (YYYY)
+         */
+        anno: number;
+        /**
+         * Data di fine dell'anno scolastico (YYYY-MM-DD)
+         */
+        dataFine: string;
+    };
+    /**
+     * Informazioni sul genitore
+     */
+    genitore: {
+        /**
+         * Email del genitore
+         */
+        email: string;
+        /**
+         * `COGNOME NOME` del genitore
+         */
+        nominativo: string;
+        /**
+         * Codice di identificazione del genitore
+         */
+        pk: string;
+    };
+    /**
+     * Profilo disabilitato
+     */
+    profiloDisabilitato: boolean;
+    /**
+     * Profilo SPID o no 
+     */
+    isSpid: boolean;
+    /**
+     * Informazioni sull'alunno
+     */
+    alunno: {
+        /**
+         * Indica se è l'ultima classe dell'alunno o no
+         */
+        ultimaClasse: boolean;
+        /**
+         * `COGNOME NOME` dell'alunno
+         */
+        nominativo: string;
+        /**
+         * Cognome dell'alunno
+         */
+        cognome: string;
+        /**
+         * Nome dell'alunno
+         */
+        nome: string;
+        /**
+         * Codice di identificazione dell'alunno
+         */
+        pk: string;
+        /**
+         * Indica se è maggiorenne o no
+         */
+        maggiorenne: boolean;
+        /**
+         * Email dell'alunno
+         */
+        email: string;
+    };
+    /**
+     * Contiene diverse informazioni sulla scuola e sulla classe
+     */
+    scheda: {
+        /**
+         * Contiene informazioni sulla classe
+         */
+        classe: {
+            /**
+             * Codice di identificazione della classe
+             */
+            pk: string;
+            /**
+             * Anno scolastico (1,2,3,4,5)
+             */
+            desDenominazione: string;
+            /**
+             * Sezione
+             */
+            desSezione: string;
+        };
+        /**
+         * Contiene informazioni sull'indirizzo scolastico/corso
+         */
+        corso: {
+            /**
+             * Descrizione del corso
+             * @example "LICEO SCIENTIFICO OPZ SCIENZE APPLICATE"
+             */
+            descrizione: string;
+            /**
+             * Codice di identificazione del corso
+             */
+            pk: string;
+        };
+        /**
+         * Informazioni sulla sede
+         */
+        sede: {
+            /**
+             * Codice meccanografico della scuola
+             */
+            descrizione: string;
+            /**
+             * Codice di identificazione della sede
+             */
+            pk: string;
+        };
+        /**
+         * Informazioni sulla scuola
+         */
+        scuola: {
+            /**
+             * Dato sconosciuto, magari ha a che fare con il tipo di scuola (Statale/Privata) visto che in degli esempi è `S`
+            */
+            desOrdine: string;
+            /**
+             * "Descrizione" (nome) della scuola
+             */
+            descrizione: string;
+            /**
+             * Codice di identificazione della scuola
+             */
+            pk: string;
+        };
+        /**
+         * Codice di identificazione della scheda?
+         */
+        pk: string;
+    };
+    /**
+     * Primo accesso
+     */
+    primoAccesso: boolean;
+    /**
+     * Profilo storico (sconosciuto)
+     */
+    profiloStorico: boolean;
+}
+
+export interface Profilo {
+    /**
+     * Mobile token del profilo
+     */
+    token: string;
+    /**
+     * Primo accesso
+     */
+    isPrimoAccesso: boolean;
+    /**
+     * Profilo disabilitato
+     */
+    profiloDisabilitato: boolean;
+    /**
+     * Indica se la password è da resettare o no
+     */
+    isResetPassword: boolean;
+    /**
+     * Indica se l'accesso è stato fatto via SPID o no
+     */
+    isSpid: boolean;
+    /**
+     * Nome dell'alunno
+     */
+    nome: string;
+    /**
+     * Cognome dell'alunno
+     */
+    cognome: string;
+}

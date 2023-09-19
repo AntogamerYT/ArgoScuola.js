@@ -43,7 +43,7 @@ export class ArgoClient {
         this.accountCredentials.codice_scuola = codScuola;
         this.accountCredentials.username = username;
         this.accountCredentials.password = password;
-        this.configPath = configPath || './.argo/';
+        this.configPath = configPath ?? './.argo/';
         this.debug = debug || false;
 
     }
@@ -58,7 +58,7 @@ export class ArgoClient {
         } else {
             if (fs.existsSync(this.configPath + "token.json")) {
                 this.token = JSON.parse(fs.readFileSync(this.configPath + "token.json", "utf8"));
-                if (this.token.expires_at && this.token.expires_at < new Date()) {
+                if (this.token.expires_at && new Date(this.token.expires_at).getTime() < new Date().getTime()) {
                     const newToken = await this.utilities.requestRefreshToken();
                     if (!newToken) {
                         this.token = await getAccessToken(this.accountCredentials.codice_scuola, this.accountCredentials.username, this.accountCredentials.password);
@@ -89,7 +89,11 @@ export class ArgoClient {
 
 
     private async attemptAccessToken() {
-        const req = await sendArgoRequest(this, "/dashboard/aggiornadata", "GET", false);
+        const req = await this.sendArgoRequest("/login", "POST", false, JSON.stringify({
+            "lista-opzioni-notifiche": "{}",
+            "lista-x-auth-token": "[]",
+            clientID: "d8MtQX5fR3yS9I7k-5OXUs:APA91bErrU-H7wGQ8yLastE_xS2JHDrVrfReRY2mnWQ9aVd-ohWYDTSLVRrKUsO2-25mBN1aduh5sPnZjFstg0Ixqiuoh5wCC38BB6NEveqWI_d6ZpM5DN3nvyVS8vDtwLS9caWeCmEK"
+        }))
 
         if (req.status === 401) return false;
 
