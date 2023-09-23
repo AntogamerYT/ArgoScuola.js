@@ -6,7 +6,7 @@ Una libreria JavaScript con supporto per TypeScript che permette di interfacciar
 
 Mancano ancora molti endpoint da implementare
 
-I mobile token sono implementati, perciò sarà possibile fare richieste come Argo#getDashboard() affinchè venga selezionato un profil con Argo#selectUser()
+I mobile token sono implementati, perciò sarà possibile fare richieste come Argo#getDashboard() affinchè venga selezionato un profilo con Argo#selectUser()
 
 Il login funziona correttamente, quindi è possibile ottenere l'access/refresh token e refresharlo automaticamente quando viene fatta una nuova richiesta o quando il client prova a ri-loggare.
 
