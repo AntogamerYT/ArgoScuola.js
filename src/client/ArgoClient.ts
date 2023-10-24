@@ -16,7 +16,8 @@ export class ArgoClient {
             password: ""
         }
     configPath: string;
-    debug: boolean;
+    //readonly debugEvent: (message: string) => void = () => { };
+    saveLogin: boolean = true;
     dataAggiornaData = "";
     token: Token = { access_token: "", expires_at: undefined, id_token: "", refresh_token: "", scope: "openid offline profile user.roles argo", token_type: "bearer" };
     utilities = new Utilities(this);
@@ -28,7 +29,7 @@ export class ArgoClient {
     * @param username Username argo
     * @param password Password del profilo
     * @param configPath Percorso del file di configurazione da salvare (contiene access token e refresh token) (default: ./.argo/)
-    * @param debug Abilita log di debug (defaulta a false)
+    * @param saveLogin Se true, salva i dati di login in un file di configurazione (default: true)
     * @example
     * ```js
     * import { ArgoClient } from "ArgoScuola.js";
@@ -39,39 +40,57 @@ export class ArgoClient {
     *   });
     * ```
     */
-    constructor(codScuola: string, username: string, password: string, debug?: boolean | undefined, configPath?: string) {
-        this.accountCredentials.codice_scuola = codScuola;
-        this.accountCredentials.username = username;
-        this.accountCredentials.password = password;
-        this.configPath = configPath ?? './.argo/';
-        this.debug = debug || false;
+    constructor(opzioni: {
+        codScuola: string;
+        username: string;
+        password: string;
+        //debugEvent?: (message: string) => void;
+        configPath?: string;
+        saveLogin?: boolean;
+    }) {
+        this.accountCredentials.codice_scuola = opzioni.codScuola;
+        this.accountCredentials.username = opzioni.username;
+        this.accountCredentials.password = opzioni.password;
+        this.configPath = opzioni.configPath ?? './.argo/';
+        //this.debugEvent = opzioni.debugEvent ?? (() => { });
 
     }
 
 
     public async login() {
+        if (!this.saveLogin) {
+            //this.debugEvent("Il salvataggio del login é disabilitato, login in corso (verrà creata una nuova sessione al relogin)...");
+            this.token = await getAccessToken(this.accountCredentials.codice_scuola, this.accountCredentials.username, this.accountCredentials.password);
+            return;
+        }
 
         if (!fs.existsSync(this.configPath)) {
-            fs.mkdirSync(this.configPath);
             this.token = await getAccessToken(this.accountCredentials.codice_scuola, this.accountCredentials.username, this.accountCredentials.password);
-            fs.writeFileSync(this.configPath + "token.json", JSON.stringify(this.token));
+            fs.mkdirSync(this.configPath);
+            //this.debugEvent(`${this.configPath} creato`);
+            fs.writeFileSync(`${this.configPath}${this.accountCredentials.codice_scuola}${this.accountCredentials.username}.json`, JSON.stringify(this.token));
+            //this.debugEvent(`${this.configPath}${this.accountCredentials.codice_scuola}${this.accountCredentials.username}.json creato`);
         } else {
-            if (fs.existsSync(this.configPath + "token.json")) {
-                this.token = JSON.parse(fs.readFileSync(this.configPath + "token.json", "utf8"));
+            if (fs.existsSync(`${this.configPath}${this.accountCredentials.codice_scuola}${this.accountCredentials.username}.json`)) {
+                this.token = JSON.parse(fs.readFileSync(`${this.configPath}${this.accountCredentials.codice_scuola}${this.accountCredentials.username}.json`, "utf8"));
                 if (this.token.expires_at && new Date(this.token.expires_at).getTime() < new Date().getTime()) {
+                    //this.debugEvent("L'access token é scaduto, richiesta di un nuovo access token in corso...");
                     const newToken = await this.utilities.requestRefreshToken();
                     if (!newToken) {
+                        //this.debugEvent("Il refresh token é scaduto, relogin in corso...");
                         this.token = await getAccessToken(this.accountCredentials.codice_scuola, this.accountCredentials.username, this.accountCredentials.password);
-                        fs.writeFileSync(this.configPath + "token.json", JSON.stringify(this.token));
+                        fs.writeFileSync(`${this.configPath}${this.accountCredentials.codice_scuola}${this.accountCredentials.username}.json`, JSON.stringify(this.token));
                     }
                 }
                 if (!await this.attemptAccessToken()) {
+                    
                     this.token = await getAccessToken(this.accountCredentials.codice_scuola, this.accountCredentials.username, this.accountCredentials.password);
-                    fs.writeFileSync(this.configPath + "token.json", JSON.stringify(this.token));
+                    fs.writeFileSync(`${this.configPath}${this.accountCredentials.codice_scuola}${this.accountCredentials.username}.json`, JSON.stringify(this.token));
                 }
             } else {
+                //this.debugEvent(`${this.configPath}${this.accountCredentials.codice_scuola}${this.accountCredentials.username}.json non esiste, login in corso...`);
                 this.token = await getAccessToken(this.accountCredentials.codice_scuola, this.accountCredentials.username, this.accountCredentials.password);
-                fs.writeFileSync(this.configPath + "token.json", JSON.stringify(this.token));
+                fs.writeFileSync(`${this.configPath}${this.accountCredentials.codice_scuola}${this.accountCredentials.username}.json`, JSON.stringify(this.token));
             }
         }
     }

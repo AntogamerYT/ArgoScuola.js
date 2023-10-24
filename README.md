@@ -17,7 +17,14 @@ Il login funziona correttamente, quindi è possibile ottenere l'access/refresh t
 import { ArgoClient } from 'argoscuola.js'
 
 // Inizializza l'ArgoClient
-const client = new ArgoClient("codiceScuola", "username", "password")
+const client = new ArgoClient({
+    codScuola: "ab12345",
+    username: "anto",
+    password: "no",
+    // dati opzionali
+    configPath: "./argo",
+    saveLogins: true
+})
 
 // Fai il login 
 await client.login()
