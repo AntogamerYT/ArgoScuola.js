@@ -23,7 +23,7 @@ const client = new ArgoClient({
     password: "no",
     // dati opzionali
     configPath: "./argo",
-    saveLogins: true
+    saveLogin: true
 })
 
 // Fai il login 
