@@ -17,7 +17,7 @@ export async function sendArgoRequest(client: ArgoClient, path: string, method: 
         method: method,
         headers: {
             "Authorization": "Bearer " + client.token.access_token,
-            "argo-client-version": "1.25.2",
+            "argo-client-version": "9.99.9",
             "content-type": "application/json; charset=utf-8",
             "x-auth-token": "",
             "x-cod-min": client.accountCredentials.codice_scuola,
