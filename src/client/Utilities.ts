@@ -33,8 +33,20 @@ export class Utilities {
             }).toString()
         })
 
-        if (req.status === 401) return undefined;
-        const data = await req.json();
+        if (!req.ok) return undefined;
+
+        const rawResponse = await req.text();
+        if (!rawResponse.trim()) return undefined;
+
+        let data: any;
+        try {
+            data = JSON.parse(rawResponse);
+        } catch {
+            return undefined;
+        }
+
+        if (!data.access_token || !data.expires_in) return undefined;
+
         data.expires_at = new Date(Date.now() + data.expires_in * 1000);
         delete data.expires_in;
 
