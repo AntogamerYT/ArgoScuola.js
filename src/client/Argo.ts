@@ -1,5 +1,5 @@
 import { APIDashboard, APIProfilo, Profilo } from "../types/Types.js";
-import { ArgoClient } from "./ArgoClient";
+import { ArgoClient } from "./ArgoClient.js";
 
 
 export class Argo {

@@ -97,8 +97,7 @@ export function generatePkce() {
         .createHash("sha256")
         .update(code_verifier)
         .digest("base64");
-
-    const code_challenge = base64url.fromBase64(base64Digest);
+    const code_challenge = base64url.default.fromBase64(base64Digest);
 
     return { code_challenge, code_verifier };
 }
