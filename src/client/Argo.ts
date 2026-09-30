@@ -221,4 +221,30 @@ export class Argo {
         }
         return false;
     }
+
+    /**
+     * Ottiene l'URL temporaneo (firmato S3) per scaricare un allegato di bacheca.
+     * @param uid pk dell'allegato (es. `listaAllegati[0].pk` di un item bacheca)
+     * @param pkScheda pk della scheda alunno; default = scheda del profilo selezionato
+     * @returns URL temporaneo da cui scaricare il file
+     * @example
+     * ```js
+     * const url = await client.argo.downloadAllegatoBacheca(allegatoPk);
+     * const file = await (await fetch(url)).arrayBuffer();
+     * ```
+     */
+    public async downloadAllegatoBacheca(uid: string, pkScheda?: string): Promise<string> {
+        if (!this.profiloSelezionato) throw new Error("Profilo non selezionato, si prega di selezionarne uno con il metodo client.argo.selectUser()");
+        if (!uid) throw new Error("uid allegato mancante");
+        const scheda = pkScheda ?? this.profiloSelezionato.profilo.scheda.pk;
+        if (!scheda) throw new Error("pkScheda mancante");
+
+        const res = await this.api.request<{ success: boolean; url?: string }>("/famiglia/downloadallegatobacheca", "POST", {
+            body: JSON.stringify({ uid, pkScheda: scheda }),
+            headers: { "x-auth-token": this.profiloSelezionato.token },
+        });
+        const body = res.response as unknown as { success?: boolean; url?: string } | undefined;
+        if (res.status !== 200 || !body?.url) throw new Error(`Download allegato fallito (status ${res.status})`);
+        return body.url;
+    }
 }
