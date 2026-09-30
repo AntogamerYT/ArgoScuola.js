@@ -1,2 +1,14 @@
 export { ArgoClient } from "./client/ArgoClient.js";
-export { APIDashboard, APIProfilo } from './types/Types.js';
+export { Argo, DASHBOARD_OPZIONI } from "./client/Argo.js";
+export { Utilities } from "./client/Utilities.js";
+export { ApiClient } from "./http/apiClient.js";
+export type { ArgoResponse } from "./http/apiClient.js";
+export { FileTokenStore } from "./auth/tokenStore.js";
+export { AuthService } from "./auth/authService.js";
+export type { Token } from "./types/token.js";
+export type { OpenIDConfiguration } from "./types/openid.js";
+export type { HttpMethod, ArgoRequestHeaders } from "./types/http.js";
+export { ARGO_CONSTANTS } from "./types/config.js";
+export type { ArgoClientOptions } from "./types/options.js";
+export type { APIDashboard, DashboardData, DashboardOpzione, APIWhat, WhatDati, WhatDateInput, GetWhatOptions } from "./types/dashboard.js";
+export type { APIProfilo, Profilo, ProfiloSelezionato } from "./types/profilo.js";
